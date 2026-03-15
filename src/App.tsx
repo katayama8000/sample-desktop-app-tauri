@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
-import dayjs from 'dayjs';
-import './App.css';
+import { useEffect, useMemo, useState } from "react";
+import dayjs from "dayjs";
+import "./App.css";
 
 type Todo = {
   id: number;
@@ -9,19 +9,19 @@ type Todo = {
   createdAt: number;
 };
 
-type Filter = 'all' | 'active' | 'completed';
+type Filter = "all" | "active" | "completed";
 
-const STORAGE_KEY = 'sample-desktop-app-tauri.todos';
+const STORAGE_KEY = "sample-desktop-app-tauri.todos";
 
 function isTauriRuntime() {
-  return typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window;
+  return typeof window !== "undefined" && "__TAURI_INTERNALS__" in window;
 }
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [newTodoText, setNewTodoText] = useState('');
-  const [filter, setFilter] = useState<Filter>('all');
-  const today = dayjs().format('YYYY年M月D日 dddd');
+  const [newTodoText, setNewTodoText] = useState("");
+  const [filter, setFilter] = useState<Filter>("all");
+  const today = dayjs().format("YYYY年M月D日 dddd");
 
   useEffect(() => {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -52,7 +52,7 @@ function App() {
 
     const syncAppIconBadge = async () => {
       try {
-        const { getCurrentWindow } = await import('@tauri-apps/api/window');
+        const { getCurrentWindow } = await import("@tauri-apps/api/window");
         if (!active) {
           return;
         }
@@ -73,9 +73,9 @@ function App() {
 
   const filteredTodos = useMemo(() => {
     switch (filter) {
-      case 'active':
+      case "active":
         return todos.filter((todo) => !todo.done);
-      case 'completed':
+      case "completed":
         return todos.filter((todo) => todo.done);
       default:
         return todos;
@@ -106,14 +106,14 @@ function App() {
       },
       ...current,
     ]);
-    setNewTodoText('');
+    setNewTodoText("");
   }
 
   function toggleTodo(id: number) {
     setTodos((current) =>
       current.map((todo) =>
-        todo.id === id ? { ...todo, done: !todo.done } : todo,
-      ),
+        todo.id === id ? { ...todo, done: !todo.done } : todo
+      )
     );
   }
 
@@ -140,7 +140,8 @@ function App() {
           onSubmit={(event) => {
             event.preventDefault();
             addTodo();
-          }}>
+          }}
+        >
           <input
             value={newTodoText}
             onChange={(event) => setNewTodoText(event.currentTarget.value)}
@@ -154,20 +155,23 @@ function App() {
           <div className="filters" role="tablist" aria-label="タスクフィルター">
             <button
               type="button"
-              className={filter === 'all' ? 'active' : ''}
-              onClick={() => setFilter('all')}>
+              className={filter === "all" ? "active" : ""}
+              onClick={() => setFilter("all")}
+            >
               すべて
             </button>
             <button
               type="button"
-              className={filter === 'active' ? 'active' : ''}
-              onClick={() => setFilter('active')}>
+              className={filter === "active" ? "active" : ""}
+              onClick={() => setFilter("active")}
+            >
               未完了
             </button>
             <button
               type="button"
-              className={filter === 'completed' ? 'active' : ''}
-              onClick={() => setFilter('completed')}>
+              className={filter === "completed" ? "active" : ""}
+              onClick={() => setFilter("completed")}
+            >
               完了
             </button>
           </div>
@@ -175,26 +179,30 @@ function App() {
             type="button"
             className="secondary"
             onClick={clearCompleted}
-            disabled={stats.done === 0}>
+            disabled={stats.done === 0}
+          >
             完了を一括削除
           </button>
         </div>
 
         <ul className="todo-list">
           {filteredTodos.map((todo) => (
-            <li key={todo.id} className={todo.done ? 'done' : ''}>
+            <li key={todo.id} className={todo.done ? "done" : ""}>
               <label>
                 <input
                   type="checkbox"
                   checked={todo.done}
-                  onChange={() => toggleTodo(todo.id)}
+                  onChange={() =>
+                    toggleTodo(todo.id)}
                 />
                 <span>{todo.text}</span>
               </label>
               <button
                 type="button"
                 className="danger"
-                onClick={() => removeTodo(todo.id)}>
+                onClick={() =>
+                  removeTodo(todo.id)}
+              >
                 削除
               </button>
             </li>
