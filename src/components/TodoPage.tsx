@@ -35,9 +35,6 @@ export function TodoPage(
         <p className="eyebrow">React + Tauri</p>
         <h1>TODO App</h1>
         <p className="today">今日は {today}</p>
-        <p className="subtitle">
-          既存画面をトップページに置いたまま、ルーティングを試せます。
-        </p>
       </header>
 
       <form

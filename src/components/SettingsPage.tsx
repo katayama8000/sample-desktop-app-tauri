@@ -10,9 +10,6 @@ export function SettingsPage({ stats }: SettingsPageProps) {
       <header className="panel-header">
         <p className="eyebrow">Routing Demo</p>
         <h1>Settings</h1>
-        <p className="subtitle">
-          `HashRouter` で画面遷移できているかを確認するためのページです。
-        </p>
       </header>
 
       <section className="settings-grid" aria-label="ルーティング情報">
