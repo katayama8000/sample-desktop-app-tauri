@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { RouteNav } from "./components/RouteNav.tsx";
+import { DocPage } from "./components/DocPage.tsx";
 import { SettingsPage } from "./components/SettingsPage.tsx";
 import { TodoPage } from "./components/TodoPage.tsx";
 import { useTodos } from "./hooks/useTodos.ts";
@@ -45,6 +46,7 @@ function App() {
             }
           />
           <Route path="/settings" element={<SettingsPage stats={stats} />} />
+          <Route path="/doc" element={<DocPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </section>

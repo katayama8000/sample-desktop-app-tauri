@@ -18,6 +18,13 @@ export function RouteNav() {
       >
         Settings
       </NavLink>
+      <NavLink
+        to="/doc"
+        className={({ isActive }) =>
+          isActive ? "route-link active" : "route-link"}
+      >
+        Doc
+      </NavLink>
     </nav>
   );
 }
