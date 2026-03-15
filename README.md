@@ -23,7 +23,13 @@ Typescript in Vite.
 deno install
 ```
 
-### Run in development mode
+### Run for web
+
+```bash
+deno task dev
+```
+
+### Run for desktop
 
 ```bash
 deno task tauri dev
@@ -35,7 +41,7 @@ deno task tauri dev
 deno task tauri [Android|iOS] init
 ```
 
-### Run on Android or iOS
+### Run for Android or iOS
 
 ```bash
 deno task tauri [Android|iOS] dev
