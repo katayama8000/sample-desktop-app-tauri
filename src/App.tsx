@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import dayjs from 'dayjs';
 import './App.css';
 
 type Todo = {
@@ -20,6 +21,7 @@ function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodoText, setNewTodoText] = useState('');
   const [filter, setFilter] = useState<Filter>('all');
+  const today = dayjs().format('YYYY年M月D日 dddd');
 
   useEffect(() => {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -129,6 +131,7 @@ function App() {
         <header className="panel-header">
           <p className="eyebrow">React + Tauri</p>
           <h1>TODO App</h1>
+          <p className="today">今日は {today}</p>
           <p className="subtitle">今日やることを、軽く整理する。</p>
         </header>
 

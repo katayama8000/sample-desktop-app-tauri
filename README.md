@@ -37,3 +37,9 @@ deno task tauri [Android|iOS] init
 ```bash
 deno task tauri [Android|iOS] dev
 ```
+
+### Install dependencies
+
+```bash
+deno install npm:dayjs
+```

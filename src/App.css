@@ -84,6 +84,13 @@ h1 {
   color: var(--muted);
 }
 
+.today {
+  margin: 0.7rem 0 0;
+  color: var(--accent-strong);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
 .todo-form {
   display: grid;
   grid-template-columns: 1fr auto;
