@@ -1,15 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { RouteNav } from "./components/RouteNav.tsx";
+import { SettingsPage } from "./components/SettingsPage.tsx";
+import { TodoPage } from "./components/TodoPage.tsx";
+import type { Filter, Todo } from "./types/todo.ts";
 import "./App.css";
-
-type Todo = {
-  id: number;
-  text: string;
-  done: boolean;
-  createdAt: number;
-};
-
-type Filter = "all" | "active" | "completed";
 
 const STORAGE_KEY = "sample-desktop-app-tauri.todos";
 
@@ -128,95 +124,30 @@ function App() {
   return (
     <main className="todo-app">
       <section className="panel">
-        <header className="panel-header">
-          <p className="eyebrow">React + Tauri</p>
-          <h1>TODO App</h1>
-          <p className="today">今日は {today}</p>
-          <p className="subtitle">今日やることを、軽く整理する。</p>
-        </header>
+        <RouteNav />
 
-        <form
-          className="todo-form"
-          onSubmit={(event) => {
-            event.preventDefault();
-            addTodo();
-          }}
-        >
-          <input
-            value={newTodoText}
-            onChange={(event) => setNewTodoText(event.currentTarget.value)}
-            placeholder="新しいタスクを入力"
-            aria-label="新しいタスク"
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <TodoPage
+                filteredTodos={filteredTodos}
+                filter={filter}
+                newTodoText={newTodoText}
+                onAddTodo={addTodo}
+                onClearCompleted={clearCompleted}
+                onFilterChange={setFilter}
+                onInputChange={setNewTodoText}
+                onRemoveTodo={removeTodo}
+                onToggleTodo={toggleTodo}
+                stats={stats}
+                today={today}
+              />
+            }
           />
-          <button type="submit">追加</button>
-        </form>
-
-        <div className="toolbar">
-          <div className="filters" role="tablist" aria-label="タスクフィルター">
-            <button
-              type="button"
-              className={filter === "all" ? "active" : ""}
-              onClick={() => setFilter("all")}
-            >
-              すべて
-            </button>
-            <button
-              type="button"
-              className={filter === "active" ? "active" : ""}
-              onClick={() => setFilter("active")}
-            >
-              未完了
-            </button>
-            <button
-              type="button"
-              className={filter === "completed" ? "active" : ""}
-              onClick={() => setFilter("completed")}
-            >
-              完了
-            </button>
-          </div>
-          <button
-            type="button"
-            className="secondary"
-            onClick={clearCompleted}
-            disabled={stats.done === 0}
-          >
-            完了を一括削除
-          </button>
-        </div>
-
-        <ul className="todo-list">
-          {filteredTodos.map((todo) => (
-            <li key={todo.id} className={todo.done ? "done" : ""}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={todo.done}
-                  onChange={() =>
-                    toggleTodo(todo.id)}
-                />
-                <span>{todo.text}</span>
-              </label>
-              <button
-                type="button"
-                className="danger"
-                onClick={() =>
-                  removeTodo(todo.id)}
-              >
-                削除
-              </button>
-            </li>
-          ))}
-          {filteredTodos.length === 0 && (
-            <li className="empty">表示できるタスクがありません。</li>
-          )}
-        </ul>
-
-        <footer className="stats" aria-live="polite">
-          <p>総数: {stats.total}</p>
-          <p>未完了: {stats.active}</p>
-          <p>完了: {stats.done}</p>
-        </footer>
+          <Route path="/settings" element={<SettingsPage stats={stats} />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </section>
     </main>
   );
