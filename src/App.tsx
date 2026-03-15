@@ -12,6 +12,10 @@ type Filter = 'all' | 'active' | 'completed';
 
 const STORAGE_KEY = 'sample-desktop-app-tauri.todos';
 
+function isTauriRuntime() {
+  return typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window;
+}
+
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodoText, setNewTodoText] = useState('');
@@ -35,6 +39,34 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+  }, [todos]);
+
+  useEffect(() => {
+    if (!isTauriRuntime()) {
+      return;
+    }
+
+    let active = true;
+
+    const syncAppIconBadge = async () => {
+      try {
+        const { getCurrentWindow } = await import('@tauri-apps/api/window');
+        if (!active) {
+          return;
+        }
+
+        const activeCount = todos.filter((todo) => !todo.done).length;
+        await getCurrentWindow().setBadgeCount(activeCount || undefined);
+      } catch {
+        // Ignore unsupported environments.
+      }
+    };
+
+    void syncAppIconBadge();
+
+    return () => {
+      active = false;
+    };
   }, [todos]);
 
   const filteredTodos = useMemo(() => {
